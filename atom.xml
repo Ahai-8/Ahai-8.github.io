@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://ahai-8.github.io</id>
+    <title>Ahai-8</title>
+    <updated>2021-07-13T01:46:45.111Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://ahai-8.github.io"/>
+    <link rel="self" href="https://ahai-8.github.io/atom.xml"/>
+    <subtitle>No Game No Life</subtitle>
+    <logo>https://ahai-8.github.io/images/avatar.png</logo>
+    <icon>https://ahai-8.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2021, Ahai-8</rights>
+    <entry>
+        <title type="html"><![CDATA[Godot Engine 学习笔记：存取JSON文件]]></title>
+        <id>https://ahai-8.github.io/post/存取JSON文件/</id>
+        <link href="https://ahai-8.github.io/post/存取JSON文件/">
+        </link>
+        <updated>2021-07-09T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>JSON文件常用于储存游戏存档和剧情文本。</p>
+<h2 id="常用方法与函数">常用方法与函数</h2>
+<ul>
+<li><code>file.get_as_text()</code>：读取文件内容为纯文本</li>
+<li><code>parse_json()</code>：将参数解析为json</li>
+<li><code>to_json()</code>：将变量储存的内容转换为json格式</li>
+<li><code>file.store_line()</code>：将参数储存为单行文本</li>
+</ul>
+<h2 id="示例代码">示例代码</h2>
+<pre><code>extends Node
+
+var data = {}
+
+func load_game():
+    var file = File.new()
+    file.open(&quot;user://data.json&quot;,file.READ)
+    var text = file.get_as_text()
+    data = parse_json(text)
+    file.close()
+
+
+func save_game():
+    var file
+    file = File.new()
+    file.open(&quot;user://data.json&quot;, File.WRITE)
+    file.store_line(to_json(data))
+    file.close()
+</code></pre>
+<h2 id="参考">参考</h2>
+<ol>
+<li><a href="https://youtu.be/L9Zekkb4ZXc">Godot Quick Tip: Saving and Loading with JSON</a></li>
+<li>Godot Doc / Class:@GDScript</li>
+<li>Godot Doc / Class:JSON</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Godot Engine 学习笔记：通过 Tween 节点实现插值动画]]></title>
+        <id>https://ahai-8.github.io/post/通过Tween节点实现插值动画/</id>
+        <link href="https://ahai-8.github.io/post/通过Tween节点实现插值动画/">
+        </link>
+        <updated>2021-07-04T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>在 Godot 引擎中要为某个节点添加插值动画，比如放大、缩小、闪烁、或者移动一段距离，可以通过添加Tween节点，并调用Tween节点的interpolate_property方法实现。</p>
+<p>该方法所需参数如下：</p>
+<pre><code>$Tween.interpolate_property(
+    object: Object,                    #进行动画的节点
+    property: NodePath,                #进行动画的节点属性
+    initial_val: Variant,              #初始值
+    final_val: Variant,                #结束值
+    duration: float,                   #动画时长
+    trans_type: TransitionType = 0,    #变换类型，可以写名称或者对应的枚举值
+    ease_type: EaseType = 2,           #缓和类型
+    delay: float = 0                   #延迟时间
+)
+</code></pre>
+<p>第6、7、8个参数可以缺省，此时它们会被分别设置为其默认值：QUART，EASE_IN_OUT，0.</p>
+<h2 id="示例">示例</h2>
+<h3 id="场景节点树">场景节点树</h3>
+<pre><code>|--Node2D
+    |--AnimatedSprite
+    |--Tween
+</code></pre>
+<h3 id="代码">代码</h3>
+<pre><code>$Tween.interpolate_property(
+    $AnimatedSprite,
+    'scale',
+    $AnimatedSprite.scale,
+    $AnimatedSprite.scale * 3,
+    0.3,
+    Tween.TRANS_QUAD,
+    Tween.EASE_IN_OUT
+    )
+
+$Tween.start()
+</code></pre>
+<p>这段代码将为 AnimatedSprite 节点添加一段插值动画，播放后，其大小将在0.3秒内从初始大小变为原来的3倍，变换速度符合第6、7个参数确定的曲线（见图例）。</p>
+<h2 id="插值函数类型图例">插值函数类型图例</h2>
+<figure data-type="image" tabindex="1"><img src="https://ahai-8.github.io/post-images/%E9%80%9A%E8%BF%87Tween%E8%8A%82%E7%82%B9%E5%AE%9E%E7%8E%B0%E6%8F%92%E5%80%BC%E5%8A%A8%E7%94%BBa.png" alt="" loading="lazy"></figure>
+<h2 id="参考">参考</h2>
+<ol>
+<li>Chris Bradfield, <em>Godot Engine Game Development Projects</em></li>
+<li><a href="https://github.com/wandomPewlin/godotTweeningCheatSheet">wandomPewlin/godotTweeningCheatSheet</a></li>
+<li><a href="https://docs.godotengine.org/en/stable/classes/class_tween.html">Godot Docs / Tween</a></li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Godot Engine 游戏开发项目]]></title>
+        <id>https://ahai-8.github.io/post/Godot Engine 游戏开发项目/</id>
+        <link href="https://ahai-8.github.io/post/Godot Engine 游戏开发项目/">
+        </link>
+        <updated>2021-05-04T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="coin-dash">Coin Dash</h2>
+<p>金币收集。</p>
+<p>移动 - WSAD</p>
+<p><a href="https://ahai-8.github.io/godot-engine-projects/release/coin_dash/coin_dash.html">点击此处开始游戏</a></p>
+<figure data-type="image" tabindex="1"><img src="https://ahai-8.github.io/post-images/GodotEngine%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E9%A1%B9%E7%9B%AEa.png" alt="" loading="lazy"></figure>
+<h2 id="escape-the-maze">Escape the Maze</h2>
+<p>逃出迷宫</p>
+<p>移动 - WSAD</p>
+<p><a href="https://ahai-8.github.io/godot-engine-projects/release/escape_the_maze/escape_the_maze.html">点击此处开始游戏</a></p>
+<figure data-type="image" tabindex="2"><img src="https://ahai-8.github.io/post-images/GodotEngine%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E9%A1%B9%E7%9B%AEb.png" alt="" loading="lazy"></figure>
+<h2 id="space-rocks">Space Rocks</h2>
+<p>弹幕射击</p>
+<p><a href="https://ahai-8.github.io/godot-engine-projects/release/space_rocks/space_rocks.html">点击此处开始游戏</a></p>
+<figure data-type="image" tabindex="3"><img src="https://ahai-8.github.io/post-images/GodotEngine%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E9%A1%B9%E7%9B%AEc.png" alt="" loading="lazy"></figure>
+<h2 id="jungle-jump">Jungle Jump</h2>
+<p>平台跳跃</p>
+<p><a href="https://ahai-8.github.io/godot-engine-projects/release/jungle_jump/jungle_jump.html">点击此处开始游戏</a></p>
+<figure data-type="image" tabindex="4"><img src="https://ahai-8.github.io/post-images/GodotEngine%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E9%A1%B9%E7%9B%AEd.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+</feed>

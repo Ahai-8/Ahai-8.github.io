@@ -1,0 +1,198 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Godot Engine 学习笔记：通过 Tween 节点实现插值动画 | Ahai-8</title>
+
+<link rel="shortcut icon" href="https://ahai-8.github.io/favicon.ico?v=1626140779872">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ahai-8.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            Ahai-8
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1626140779872" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Godot Engine 学习笔记：通过 Tween 节点实现插值动画
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-07-05 ·
+                    </time>
+                    
+                        <a href="https://ahai-8.github.io/tag/you-xi/" class="post-tags">
+                            # 游戏
+                        </a>
+                    
+                        <a href="https://ahai-8.github.io/tag/kai-fa/" class="post-tags">
+                            # 开发
+                        </a>
+                    
+                        <a href="https://ahai-8.github.io/tag/godot-engine/" class="post-tags">
+                            # Godot Engine
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>在 Godot 引擎中要为某个节点添加插值动画，比如放大、缩小、闪烁、或者移动一段距离，可以通过添加Tween节点，并调用Tween节点的interpolate_property方法实现。</p>
+<p>该方法所需参数如下：</p>
+<pre><code>$Tween.interpolate_property(
+    object: Object,                    #进行动画的节点
+    property: NodePath,                #进行动画的节点属性
+    initial_val: Variant,              #初始值
+    final_val: Variant,                #结束值
+    duration: float,                   #动画时长
+    trans_type: TransitionType = 0,    #变换类型，可以写名称或者对应的枚举值
+    ease_type: EaseType = 2,           #缓和类型
+    delay: float = 0                   #延迟时间
+)
+</code></pre>
+<p>第6、7、8个参数可以缺省，此时它们会被分别设置为其默认值：QUART，EASE_IN_OUT，0.</p>
+<h2 id="示例">示例</h2>
+<h3 id="场景节点树">场景节点树</h3>
+<pre><code>|--Node2D
+    |--AnimatedSprite
+    |--Tween
+</code></pre>
+<h3 id="代码">代码</h3>
+<pre><code>$Tween.interpolate_property(
+    $AnimatedSprite,
+    'scale',
+    $AnimatedSprite.scale,
+    $AnimatedSprite.scale * 3,
+    0.3,
+    Tween.TRANS_QUAD,
+    Tween.EASE_IN_OUT
+    )
+
+$Tween.start()
+</code></pre>
+<p>这段代码将为 AnimatedSprite 节点添加一段插值动画，播放后，其大小将在0.3秒内从初始大小变为原来的3倍，变换速度符合第6、7个参数确定的曲线（见图例）。</p>
+<h2 id="插值函数类型图例">插值函数类型图例</h2>
+<figure data-type="image" tabindex="1"><img src="https://ahai-8.github.io/post-images/%E9%80%9A%E8%BF%87Tween%E8%8A%82%E7%82%B9%E5%AE%9E%E7%8E%B0%E6%8F%92%E5%80%BC%E5%8A%A8%E7%94%BBa.png" alt="" loading="lazy"></figure>
+<h2 id="参考">参考</h2>
+<ol>
+<li>Chris Bradfield, <em>Godot Engine Game Development Projects</em></li>
+<li><a href="https://github.com/wandomPewlin/godotTweeningCheatSheet">wandomPewlin/godotTweeningCheatSheet</a></li>
+<li><a href="https://docs.godotengine.org/en/stable/classes/class_tween.html">Godot Docs / Tween</a></li>
+</ol>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ahai-8.github.io/post/Godot Engine 游戏开发项目/" class="post-title gt-a-link">
+                    Godot Engine 游戏开发项目
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">No Game No Life</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        联系我：<a href="mailto:ahai-8@outlook.com">ahai-8@outlook.com</a>
+<br /><br />
+本站原创内容默认采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享 署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可。
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
